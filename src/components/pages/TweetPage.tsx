@@ -3,8 +3,10 @@ import Header from '../organisms/Header';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import Tweet from '../organisms/Tweet';
 import NewTweet from '../organisms/NewTweet';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const TweetPage = () => {
+  const { logout } = useAuth0();
   const GET_Tweets = gql`
     query {
       Tweets {
@@ -39,8 +41,6 @@ const TweetPage = () => {
     return <div>Some Error occured</div>;
   }
 
-  console.log({ error, loading, data });
-  console.log(data.Tweets[0].body);
   return (
     <Grid
       container
@@ -67,6 +67,11 @@ const TweetPage = () => {
         );
       })}
       <NewTweet />
+      <button
+        onClick={() => logout({ returnTo: window.location.origin })}
+      >
+        Log Out
+      </button>
     </Grid>
   );
 };
